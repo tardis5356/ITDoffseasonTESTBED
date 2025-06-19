@@ -64,13 +64,13 @@ public final class MecanumDrive {
 
         // drive model parameters
         public double inPerTick = 0.0019718;
-        public double lateralInPerTick = 0.00168764;
-        public double trackWidthTicks = 6688.377;
+        public double lateralInPerTick = 0.0010715;//0.000483;//0.00168764
+        public double trackWidthTicks = 9005.1534;//20730.466; //6688.377;
 
         // feedforward parameters (in tick units)
         public double kS = 0.1;//0.7849229
-        public double kV = 0.00031;//0.0003594134
-        public double kA = 0.00012;//0.00002
+        public double kV = 0.000295;//0.0003594134
+        public double kA = 0.0001275;//0.00002
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -452,14 +452,14 @@ public final class MecanumDrive {
     public PoseVelocity2d updatePoseEstimate() {
         PoseVelocity2d vel = localizer.update();
         poseHistory.add(localizer.getPose());
-        
+
         while (poseHistory.size() > 100) {
             poseHistory.removeFirst();
         }
 
         estimatedPoseWriter.write(new PoseMessage(localizer.getPose()));
-        
-        
+
+
         return vel;
     }
 
