@@ -115,6 +115,8 @@ public final class MecanumDrive {
     public final Localizer localizer;
     private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
 
+    private int imuUpdateCounter = 0;
+
     private final DownsampledWriter estimatedPoseWriter = new DownsampledWriter("ESTIMATED_POSE", 50_000_000);
     private final DownsampledWriter targetPoseWriter = new DownsampledWriter("TARGET_POSE", 50_000_000);
     private final DownsampledWriter driveCommandWriter = new DownsampledWriter("DRIVE_COMMAND", 50_000_000);
@@ -151,6 +153,12 @@ public final class MecanumDrive {
         @Override
         public Pose2d getPose() {
             return pose;
+        }
+
+        public Pose2d updatePoseWithIMU(Pose2d currentPose, YawPitchRollAngles angles){
+            Pose2d newPose = new Pose2d(currentPose.position.x, currentPose.position.y, angles.getYaw(AngleUnit.RADIANS));
+            setPose(newPose);
+            return newPose;
         }
 
         @Override
@@ -211,6 +219,13 @@ public final class MecanumDrive {
                     twist.line.value(),
                     headingDelta
             ));
+
+
+            imuUpdateCounter++;
+            if(imuUpdateCounter > 100) {
+                updatePoseWithIMU(pose, angles);
+                imuUpdateCounter = 0;
+            }
 
             return twist.velocity().value();
         }
@@ -458,7 +473,8 @@ public final class MecanumDrive {
         }
 
         estimatedPoseWriter.write(new PoseMessage(localizer.getPose()));
-        
+
+
         
         return vel;
     }
