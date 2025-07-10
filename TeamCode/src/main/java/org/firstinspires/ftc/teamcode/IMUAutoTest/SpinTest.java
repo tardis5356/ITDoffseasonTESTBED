@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.IMUAutoTest;
 
 import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.generateTrajectories;
-import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.spinTest;
+import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.spinTest1;
+import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.spinTest2;
+import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.spinTest3;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -48,7 +50,7 @@ public class SpinTest extends OpMode {
     private DcMotorEx mBL;
     private DcMotorEx mBR;
 
-    private ActionCommand SpinTest;
+    private ActionCommand SpinTest1, SpinTest2, SpinTest3;
 
     private RRSubsystem rrSubsystem;
 
@@ -109,7 +111,9 @@ public class SpinTest extends OpMode {
 
         generateTrajectories(new MecanumDrive(hardwareMap, StartPos));
 
-        SpinTest = new ActionCommand(spinTest, requirements);
+        SpinTest1 = new ActionCommand(spinTest1, requirements);
+        SpinTest2 = new ActionCommand(spinTest2, requirements);
+        SpinTest3 = new ActionCommand(spinTest3, requirements);
 
 
 
@@ -120,7 +124,9 @@ public class SpinTest extends OpMode {
 
 
                 new SequentialCommandGroup(
-                        SpinTest
+                        SpinTest1,
+                        SpinTest2,
+                        SpinTest3
 
                 )
         );

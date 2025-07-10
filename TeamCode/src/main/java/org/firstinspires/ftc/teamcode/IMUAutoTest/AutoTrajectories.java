@@ -14,7 +14,7 @@ public class AutoTrajectories {
     //Red Specimen Poses
 
 
-    public static Action spinTest;
+    public static Action spinTest1, spinTest2, spinTest3;
 
     public static final Pose2d StartPos = new Pose2d(0, 0, Math.toRadians(90));
 
@@ -29,15 +29,24 @@ public class AutoTrajectories {
     public static void generateTrajectories(MecanumDrive drive) {
 
 
-       spinTest =
+       spinTest1 =
                 drive.actionBuilder(StartPos)
-                        .waitSeconds(3)
+                        .waitSeconds(1)
                         .turn(Math.toRadians(360))
-                        .waitSeconds(3)
+                        .build();
+
+
+        spinTest2 =
+                drive.actionBuilder(StartPos)
+                        .waitSeconds(1)
                         .turn(Math.toRadians(360))
-                        .waitSeconds(3)
+                        .build();
+
+
+        spinTest3 =
+                drive.actionBuilder(StartPos)
+                        .waitSeconds(1)
                         .turn(Math.toRadians(360))
-                        .waitSeconds(3)
                         .build();
 
 

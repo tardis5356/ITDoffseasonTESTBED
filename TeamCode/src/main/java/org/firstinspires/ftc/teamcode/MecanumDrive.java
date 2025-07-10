@@ -320,8 +320,10 @@ public final class MecanumDrive {
             double headingToleranceDeg = 1;//1
             double positionToleranceIn = 0.5;//0.3
             double timeoutSec = 3; //0.1 in specimen, 0.5 in basket
-            if ((t >= timeTrajectory.duration && Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
-                    Math.abs(error.position.norm()) < positionToleranceIn) || (t>= timeTrajectory.duration + timeoutSec)) {
+            if ((t >= timeTrajectory.duration &&
+                    Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
+                    Math.abs(error.position.norm()) < positionToleranceIn)
+                    || (t>= timeTrajectory.duration + timeoutSec)) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);
@@ -409,8 +411,18 @@ public final class MecanumDrive {
             } else {
                 t = Actions.now() - beginTs;
             }
+            Pose2dDual<Time> txWorldTarget = turn.get(t);
+            targetPoseWriter.write(new PoseMessage(txWorldTarget.value()));
 
-            if (t >= turn.duration) {
+            PoseVelocity2d robotVelRobot = updatePoseEstimate();
+            Pose2d error = txWorldTarget.value().minusExp(localizer.getPose());
+            double headingToleranceDeg = .01;//1
+            double positionToleranceIn = 0.5;//0.3
+            double timeoutSec = 30000000; //0.1 in specimen, 0.5 in basket
+            if ((t >= turn.duration &&
+                    Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
+                    Math.abs(error.position.norm()) < positionToleranceIn)
+                    || (t>= turn.duration + timeoutSec)) {
                 leftFront.setPower(0);
                 leftBack.setPower(0);
                 rightBack.setPower(0);
@@ -419,10 +431,10 @@ public final class MecanumDrive {
                 return false;
             }
 
-            Pose2dDual<Time> txWorldTarget = turn.get(t);
-            targetPoseWriter.write(new PoseMessage(txWorldTarget.value()));
 
-            PoseVelocity2d robotVelRobot = updatePoseEstimate();
+
+
+
 
             PoseVelocity2dDual<Time> command = new HolonomicController(
                     PARAMS.axialGain, PARAMS.lateralGain, PARAMS.headingGain,
