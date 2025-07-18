@@ -65,7 +65,7 @@ public final class MecanumDrive {
         // drive model parameters
         public double inPerTick = 0.0019718;
         public double lateralInPerTick = 0.00168764;
-        public double trackWidthTicks = 7500;//Jun 22 Value 8669.487872701116 maybe switch?
+        public double trackWidthTicks = 8500;//Jun 22 Value 8669.487872701116 maybe switch?
 
         // feedforward parameters (in tick units)
         public double kS = 0.1;//0.7849229
@@ -84,7 +84,7 @@ public final class MecanumDrive {
         // path controller gains
         public double axialGain = 12;
         public double lateralGain = 20;
-        public double headingGain = 30; // shared with turn
+        public double headingGain = 17; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -319,7 +319,7 @@ public final class MecanumDrive {
             Pose2d error = txWorldTarget.value().minusExp(localizer.getPose());
             double headingToleranceDeg = 1;//1
             double positionToleranceIn = 0.5;//0.3
-            double timeoutSec = 3; //0.1 in specimen, 0.5 in basket
+            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
             if ((t >= timeTrajectory.duration &&
                     Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn)
@@ -416,9 +416,9 @@ public final class MecanumDrive {
 
             PoseVelocity2d robotVelRobot = updatePoseEstimate();
             Pose2d error = txWorldTarget.value().minusExp(localizer.getPose());
-            double headingToleranceDeg = .01;//1
+            double headingToleranceDeg = 1;//1
             double positionToleranceIn = 0.5;//0.3
-            double timeoutSec = 30000000; //0.1 in specimen, 0.5 in basket
+            double timeoutSec = 0; //0.1 in specimen, 0.5 in basket
             if ((t >= turn.duration &&
                     Math.abs(Math.toDegrees(error.heading.toDouble())) < headingToleranceDeg &&
                     Math.abs(error.position.norm()) < positionToleranceIn)

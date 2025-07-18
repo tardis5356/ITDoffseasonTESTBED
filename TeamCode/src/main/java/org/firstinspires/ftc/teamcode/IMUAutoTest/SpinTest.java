@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.teamcode.IMUAutoTest.AutoTrajectories.spinTe
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -21,6 +22,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Drawing;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import java.util.Set;
@@ -139,17 +141,19 @@ public class SpinTest extends OpMode {
     public void loop() {
 
         CommandScheduler.getInstance().run();
-        drive.updatePoseEstimate();
-        Pose2d pose = drive.localizer.getPose();
+
 
 
         // Note: to access the drive position info, needed to declare a drive = mecanumDrive as private variable at top of this class
-        telemetry.addData("In loop Heading", Math.toDegrees(pose.heading.toDouble()));
-        telemetry.addData("X", pose.position.x);
-        telemetry.addData("Y", pose.position.y);
+        telemetry.addData("In loop Heading", Math.toDegrees(drive.localizer.getPose().heading.toDouble()));
+        telemetry.addData("X", drive.localizer.getPose().position.x);
+        telemetry.addData("Y",drive.localizer.getPose().position.y);
         telemetry.addData("IMU Heading", drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
 
+        drive.updatePoseEstimate();
         telemetry.update();
+
+
         // Setup a variable for each drive wheel to save power level for telemetry
 
 
