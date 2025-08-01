@@ -68,7 +68,7 @@ public final class MecanumDrive {
         public double trackWidthTicks = 8500;//Jun 22 Value 8669.487872701116 maybe switch?
 
         // feedforward parameters (in tick units)
-        public double kS = 0.1;//0.7849229
+        public double kS = 0.85;//0.1;//0.7849229//Experimental 0.85
         public double kV = 0.00031;//0.0003594134
         public double kA = 0.00012;//0.00002
 
